@@ -1,17 +1,22 @@
 package presentacion;
 
 import java.awt.BorderLayout;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import entidades.Persona;
+import negocio.PersonaControl;
 
 public class Menu extends JFrame {
 
@@ -22,6 +27,10 @@ public class Menu extends JFrame {
 	private JTextField tftelefono;
 	private JTextField tfedad;
 	private JTable table;
+	private Persona persona;
+	private PersonaControl personasControl;
+	private JButton btnsave;
+	private JButton btnupdate;
 
 	/**
 	 * Launch the application.
@@ -43,6 +52,7 @@ public class Menu extends JFrame {
 	 * Create the frame.
 	 */
 	public Menu() {
+		personasControl = new PersonaControl();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 461, 475);
 		contentPane = new JPanel();
@@ -99,7 +109,7 @@ public class Menu extends JFrame {
 		lblNewLabel_4.setBounds(22, 146, 46, 14);
 		panel.add(lblNewLabel_4);
 		
-		JButton btnsave = new JButton("guardar");
+		btnsave = new JButton("guardar");
 		btnsave.setBounds(295, 7, 89, 23);
 		panel.add(btnsave);
 		
@@ -111,7 +121,7 @@ public class Menu extends JFrame {
 		btnedit.setBounds(295, 36, 89, 23);
 		panel.add(btnedit);
 		
-		JButton btnupdate = new JButton("actualizar");
+		btnupdate = new JButton("actualizar");
 		btnupdate.setBounds(295, 70, 89, 23);
 		panel.add(btnupdate);
 		
@@ -124,23 +134,37 @@ public class Menu extends JFrame {
 		panel.add(scrollPane);
 		
 		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-				{null, null, null, null, null, null},
-			},
-			new String[] {
-				"id", "dni", "nombre", "apellido", "telefono", "edad"
-			}
-		));
+		mostrarRegis();
 		scrollPane.setViewportView(table);
+		setLocationRelativeTo(null);
 	}
+	
+	public void mostrarRegis() {
+		table.setModel(personasControl.mostrar());
+	}
+	
+	private void mostrarMensajeOK(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+    }
+	
+	private void mostrarMensajeError(String mensaje) {
+		JOptionPane.showMessageDialog(this, mensaje, "Mensaje", JOptionPane.ERROR_MESSAGE);
+	}
+	
+	private void limpiar(){
+		tfdui.setText("");
+        tfnombre.setText("");
+        tfapellido.setText("");
+        tftelefono.setText("");
+        tfedad.setText("");
+        tfdui.requestFocus();
+    }
+	
+	private void deshabilitarBoton(){
+		btnsave.setEnabled(false);
+    }
+    
+    private void habilitarBoton(){
+    	btnupdate.setEnabled(true);
+    }
 }
