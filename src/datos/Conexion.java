@@ -39,3 +39,19 @@ public class Conexion {
 	}
 }
 */
+
+/*
+create table persona(
+	idPersona INTEGER GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1),
+    dni VARCHAR2(8) not null,
+    nombre VARCHAR2(30) not null,
+    apellido VARCHAR2(30) not null,
+    telefono VARCHAR2(9) not null,
+    edad int not null,
+    UNIQUE (idPersona)
+);
+
+Insert into persona (dni,nombre, apellido, telefono, edad) values ('0000','byron','apellido','123',141);
+
+select * from persona;
+*/
