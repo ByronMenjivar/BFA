@@ -127,13 +127,12 @@ boolean resp = false;
 	}
 
 	@Override
-	public boolean eliminar(String dni) {
+	public boolean eliminar(int id) {
 boolean resp = false;
         try {
-            String delete = "delete from persona where dni = ?";
+            String delete = "delete from persona where idPersona = ?";
             ps = Conexion.getconexion().prepareStatement(delete);
-            ps.setString(1, dni);
-            
+            ps.setInt(1, id);
             
             if (ps.executeUpdate()>0) {
                 resp = true;

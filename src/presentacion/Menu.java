@@ -37,6 +37,7 @@ public class Menu extends JFrame {
 	private JButton btnupdate;
 	
 	private int filac;
+	private JTextField tfid;
 
 	/**
 	 * Launch the application.
@@ -141,10 +142,42 @@ public class Menu extends JFrame {
 		panel.add(btnedit);
 		
 		btnupdate = new JButton("actualizar");
+		btnupdate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String resp = personasControl.actualizar(new Persona(Integer.parseInt(tfid.getText()),tfdui.getText(), tfnombre.getText(), tfapellido.getText(), tftelefono.getText(), Integer.parseInt(tfedad.getText())));
+				if(resp.equalsIgnoreCase("ok")){
+		            mostrarMensajeOK("Se registro correctamente");
+		            mostrarRegistros();
+		            limpiar();
+		        }else{
+		            mostrarMensajeError(resp);
+		        }
+			}
+		});
 		btnupdate.setBounds(295, 70, 89, 23);
 		panel.add(btnupdate);
 		
 		JButton btneliminar = new JButton("eliminar");
+		btneliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (tfid.getText().isEmpty()) {
+					mostrarMensajeError("no se puede con datos vacios");
+		        }else{
+		            if (personasControl.buscar(Integer.parseInt(tfid.getText())) == null) {
+		            	mostrarMensajeError("No existe la persona con el dni: " + tfid.getText());
+		            }else{
+		                String resp = personasControl.eliminar(Integer.parseInt(tfid.getText()));
+		                if (resp.equalsIgnoreCase("ok")) {
+		                    mostrarMensajeOK("Se elimino correctamente");
+		                    mostrarRegistros();
+		                    limpiar();
+		                }else{
+		                    mostrarMensajeError(resp);
+		                }
+		            }
+		        }
+			}
+		});
 		btneliminar.setBounds(295, 106, 89, 23);
 		panel.add(btneliminar);
 		
@@ -160,29 +193,27 @@ public class Menu extends JFrame {
 					filac = table.getSelectedRow();
 			           if (filac != -1)
 			           {
-			        	   
-			        	   //mostrarMensajeOK();
 			        	   Persona p = personasControl.buscar(Integer.parseInt(String.valueOf(table.getValueAt(filac, 0))));
+			        	   tfid.setText(String.valueOf(p.getIdPersona()));
 			        	   tfdui.setText(p.getDni());
 			               tfnombre.setText(p.getNombre());
 			               tfapellido.setText(p.getApellido());
 			               tftelefono.setText(p.getTelefono());
 			               tfedad.setText(String.valueOf(p.getEdad()));
-			 
-			               //lblID.setText(String.valueOf(jtCentral.getValueAt(filac, 0)));
-			               //lblNum.setText(String.valueOf(jtCentral.getValueAt(filac, 1)));
-			               //lblDateEntra.setText(String.valueOf(jtCentral.getValueAt(filac, 2)));
-			               //lblCantidad.setText(String.valueOf(jtCentral.getValueAt(filac, 3)));
-			 
-			               //lblTipo.setText(String.valueOf(jtEstado.getValueAt(fila,1)));
-			 
-			               //this.idcentral = (int) jtCentral.getValueAt(filac, 0);
 				}
 			}
 		}
 		});
 		mostrarRegistros();
 		scrollPane.setViewportView(table);
+		
+		tfid = new JTextField();
+		tfid.setEnabled(false);
+		tfid.setEditable(false);
+		tfid.setVisible(false);
+		tfid.setBounds(170, 171, 86, 20);
+		panel.add(tfid);
+		tfid.setColumns(10);
 		setLocationRelativeTo(null);
 	}
 	
@@ -199,6 +230,7 @@ public class Menu extends JFrame {
 	}
 	
 	private void limpiar(){
+		tfid.setText("");
 		tfdui.setText("");
         tfnombre.setText("");
         tfapellido.setText("");
@@ -214,6 +246,5 @@ public class Menu extends JFrame {
     private void habilitarBoton(){
     	btnupdate.setEnabled(true);
     }
-    
 }
 

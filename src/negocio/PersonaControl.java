@@ -69,8 +69,8 @@ public class PersonaControl {
         }
     }
     
-    public String eliminar(String dni){
-        if (datos.eliminar(dni)) {
+    public String eliminar(int id){
+        if (datos.eliminar(id)) {
             return "OK";
         }else{
             return "Ocurrio un error al eliminar";

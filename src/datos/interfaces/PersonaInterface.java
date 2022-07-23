@@ -7,5 +7,5 @@ public interface PersonaInterface {
 	public List<Persona> listar();
 	public Persona buscar(int idPersona);
 	public boolean actualizar(Persona obj);
-	public boolean eliminar(String dniPersona);
+	public boolean eliminar(int dniPersona);
 }
