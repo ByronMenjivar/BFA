@@ -17,6 +17,10 @@ import javax.swing.table.DefaultTableModel;
 
 import entidades.Persona;
 import negocio.PersonaControl;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Menu extends JFrame {
 
@@ -31,6 +35,8 @@ public class Menu extends JFrame {
 	private PersonaControl personasControl;
 	private JButton btnsave;
 	private JButton btnupdate;
+	
+	private int filac;
 
 	/**
 	 * Launch the application.
@@ -110,6 +116,19 @@ public class Menu extends JFrame {
 		panel.add(lblNewLabel_4);
 		
 		btnsave = new JButton("guardar");
+		btnsave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String resp = personasControl.insertar(tfdui.getText(), tfnombre.getText(), tfapellido.getText(), tftelefono.getText(), Integer.parseInt(tfedad.getText()));
+				if(resp.equalsIgnoreCase("ok")){
+		            mostrarMensajeOK("Se registro correctamente");
+		            mostrarRegistros();
+		            limpiar();
+		        }else{
+		            mostrarMensajeError(resp);
+		        }
+				
+			}
+		});
 		btnsave.setBounds(295, 7, 89, 23);
 		panel.add(btnsave);
 		
@@ -134,12 +153,40 @@ public class Menu extends JFrame {
 		panel.add(scrollPane);
 		
 		table = new JTable();
-		mostrarRegis();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if (arg0.getClickCount() == 2) {
+					filac = table.getSelectedRow();
+			           if (filac != -1)
+			           {
+			        	   
+			        	   //mostrarMensajeOK();
+			        	   Persona p = personasControl.buscar(Integer.parseInt(String.valueOf(table.getValueAt(filac, 0))));
+			        	   tfdui.setText(p.getDni());
+			               tfnombre.setText(p.getNombre());
+			               tfapellido.setText(p.getApellido());
+			               tftelefono.setText(p.getTelefono());
+			               tfedad.setText(String.valueOf(p.getEdad()));
+			 
+			               //lblID.setText(String.valueOf(jtCentral.getValueAt(filac, 0)));
+			               //lblNum.setText(String.valueOf(jtCentral.getValueAt(filac, 1)));
+			               //lblDateEntra.setText(String.valueOf(jtCentral.getValueAt(filac, 2)));
+			               //lblCantidad.setText(String.valueOf(jtCentral.getValueAt(filac, 3)));
+			 
+			               //lblTipo.setText(String.valueOf(jtEstado.getValueAt(fila,1)));
+			 
+			               //this.idcentral = (int) jtCentral.getValueAt(filac, 0);
+				}
+			}
+		}
+		});
+		mostrarRegistros();
 		scrollPane.setViewportView(table);
 		setLocationRelativeTo(null);
 	}
 	
-	public void mostrarRegis() {
+	public void mostrarRegistros() {
 		table.setModel(personasControl.mostrar());
 	}
 	
@@ -167,4 +214,6 @@ public class Menu extends JFrame {
     private void habilitarBoton(){
     	btnupdate.setEnabled(true);
     }
+    
 }
+

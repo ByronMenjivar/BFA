@@ -56,8 +56,8 @@ public class PersonaControl {
         
     }
     
-    public Persona buscar(String dni){
-        persona = datos.buscar(dni);
+    public Persona buscar(int id){
+        persona = datos.buscar(id);
         return persona;
     }
     

@@ -68,14 +68,14 @@ public class PersonaDAO implements PersonaInterface{
 	}
 
 	@Override
-	public Persona buscar(String dniPersona) {
+	public Persona buscar(int id) {
 		Persona persona = null;
 
         try {
-            String consulta = "select * from persona where dni = ?";
+            String consulta = "select * from persona where idPersona = ?";
 
             ps = Conexion.getconexion().prepareStatement(consulta);
-            ps.setString(1, dniPersona);
+            ps.setInt(1, id);
             rs = ps.executeQuery();
 
             if (rs.next()) {
